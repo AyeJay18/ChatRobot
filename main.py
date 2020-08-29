@@ -31,36 +31,15 @@ def bot_loop():
                                 username = re.search(r"\w+", response).group(0)
                                 message = CHAT_MSG.sub("", response)
                                 print(username + ": " + response)
-                                if re.match(r'\!robot \^', message):
-                                        #utility.chat(s,"Bot Forward")
-                                        robot.move('^')
-                                elif re.match(r'\!robot \<', message):
-                                        #utility.chat(s,"Bot Left")
-                                        robot.move('<')
-                                elif re.match(r'\!robot \>', message):
-                                        #utility.chat(s,"Bot Right")
-                                        robot.move('>')
-                                elif re.match(r'\!robot v', message):
-                                        #utility.chat(s,"Bot Backward")
-                                        robot.move('v')
-                                elif re.match(r'\!robot 360', message):
-                                        robot.move('>')
-                                        robot.move('>')
-                                        robot.move('>')
-                                        robot.move('>')
-                                        robot.move('>')
-                                        robot.move('>')
-                                        robot.move('>')
-                                        robot.move('>')
-                                elif re.match(r'\!robot 180', message):
-                                        robot.move('<')
-                                        robot.move('<')
-                                        robot.move('<')
-                                        robot.move('<')
+                                if re.match(r'^\!robot ', message):
+					newMessage = message.strip('!robot ')[0:5]
+					for char in newMessage:
+						if char in ['^','v','<','>']:
+							robot.move(char)                                        
                 time.sleep(1 / config.RATE)
         finally:
                 robot.cleanup()
                 print("GPIO Cleanup")
 if __name__ == "__main__":
         bot_loop()
-
+        
